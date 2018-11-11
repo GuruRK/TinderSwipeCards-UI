@@ -1,42 +1,48 @@
-import React, { Component } from 'react';
-import
- { View ,
-   Animated,
-   PanResponder
- } from 'react-native';
+import React, { Component } from "react";
+import { View, Animated, PanResponder } from "react-native";
 
 class Carddeck extends Component {
-    constructor (props) {
-        super(props);
-
+  constructor(props) {
+    super(props);
 
     const position = new Animated.ValueXY();
     const panResponder = PanResponder.create({
-        onStartShouldSetPanResponder: () => true,
-        onPanResponderMove: (event, gesture) => {
-            position.setValue({ x: gesture.dx , y: gesture.dy });
-        },
-        onPanResponderRelease: () => {}
+      onStartShouldSetPanResponder: () => true,
+      onPanResponderMove: (event, gesture) => {
+        position.setValue({ x: gesture.dx, y: gesture.dy });
+      },
+      onPanResponderRelease: () => {}
     });
 
-    this.state = { panResponder, position  }
+    this.state = { panResponder, position };
+  }
 
-}
-
-    renderCards() {
-        return this.props.data.map(item => {
-            return this.props.renderCard(item)
-        })
-    }
-    render () {
+  renderCards() {
+    return this.props.data.map(item, index => {
+      if (index === 0) {
         return (
-            <Animated.View
-            style = {this.state.position.getLayout()} 
-            {...this.state.panResponder.panHandlers}>
-                {this.renderCards()}
-            </Animated.View>
-        )
-    }
-} 
+          <Animated.View
+            key = {item.id}
+            style={this.getCardStyle()}
+            {...this.state.panResponder.panHandlers}
+          >
+            {this.props.renderCards(item)}
+          </Animated.View>
+        );
+      }
+      return this.props.renderCard(item);
+    });
+  }
+  getCardStyle() {
+      return  {
+          ...this.state.position.getLayout(),
+          transform : [{rotate : '-45deg'}]
+        }
+  }
+
+  render() {
+    return <View>{this.renderCards()}</View>;
+  }
+}
 
 export default Carddeck;
