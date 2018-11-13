@@ -102,16 +102,20 @@ class Carddeck extends Component {
             {this.props.renderCard(item)}
           </Animated.View>
         );
-      }
-       return (
-         <View 
-         key = {item.id} 
-         style = {styles.cardStyle}
+      } else {
+       return  
+       (
+       
+
+         <Animated.View 
+            key = {item.id} 
+            style = {[styles.cardStyle, { top: 50}]}
          >
           {this.props.renderCard(item)}
-         </View>
+         </Animated.View>
         
-       );
+        ) 
+      };
     }).reverse();
   }
 
